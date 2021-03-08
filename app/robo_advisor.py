@@ -61,6 +61,14 @@ for date, daily_data in parsed_response["Time Series (Daily)"].items():
     }
     records.append(record)
 
+#CSV stuff:
+df = DataFrame(records)
+
+filePath = os.path.join(os.path.dirname(__file__), "..", "data", f"{selectedSymbol}_prices.csv")
+
+df.to_csv(filePath, index=False)
+
+#Console stuff:
 maxHold = records[1]["high"]
 minHold = records[1]["low"]
 for day in records:
