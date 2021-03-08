@@ -1,7 +1,7 @@
 # robo-advisor
 ##Intro to Python
 
-This project is designed to allow the user to input a stock/crypto ticker of choice, and receive a recommendation on whether to buy or not. We will be pulling from the [alphavantage](https://www.alphavantage.co/) information, so you will need your own API.
+This project is designed to allow the user to input a stock/crypto ticker of choice, and receive a recommendation on whether to buy or not. Additionally, we should get a chart of the recent closing prices of the stock. We will be pulling from the [alphavantage](https://www.alphavantage.co/) information, so you will need your own API.
 
 ### Setup:
 To run, set up a virtual environment with conda:
@@ -27,6 +27,6 @@ ALPHAVANTAGE_API_KEY = yourkey
 ### To Run:
 
 ```
-python shopping_cart.py
+python app/robo_advisor.py
 ```
-Then, follow the prompts and insert your chosen items, and decide if you want the emailed receipt.
+Then, follow the prompts to insert your chosen ticker.

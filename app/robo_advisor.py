@@ -67,8 +67,6 @@ for date, daily_data in parsed_response["Time Series (Daily)"].items():
 #CSV stuff:
 df = DataFrame(records)
 
-#print(type(df['date']))
-
 filePath = os.path.join(os.path.dirname(__file__), "..", "data", f"{selectedSymbol}_prices.csv")
 
 df.to_csv(filePath, index=False)
