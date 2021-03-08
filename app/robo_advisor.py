@@ -1,6 +1,7 @@
 import requests
 import os
 import json
+import seaborn as sns
 from datetime import datetime
 from pandas import DataFrame
 from dotenv import load_dotenv
@@ -91,12 +92,17 @@ print(f"LATEST CLOSE: {to_usd(lastClose)}")
 print(f"RECENT HIGH: {to_usd(maxHold)}")
 print(f"RECENT LOW: {to_usd(minHold)}")
 print("-------------------------")
-if(lastClose < 1.2*minHold):
+if(lastClose < 1.2*minHold and lastClose < (minHold + maxHold)/2):
     print("RECOMMENDATION: BUY!")
-    print("RECOMMENDATION REASON: Latest close is less than  20% more than recent min")
+    print("RECOMMENDATION REASON: Latest close is less than 20% more than recent min and less than average of recent min/max")
 else:
     print("RECOMMENDATION: DON'T BUY!")
-    print("RECOMMENDATION REASON: Latest close is more than recent min")
+    print("RECOMMENDATION REASON: Latest close is over 20% more than recent min or not less than average of recent min/max")
+print("-------------------------")
+print(f"Writing {selectedSymbol} info to csv file found in data folder...")
 print("-------------------------")
 print("HAPPY INVESTING!")
 print("-------------------------")
+
+#graph stuff
+sns.lineplot(data=df,x="date",y="close")
