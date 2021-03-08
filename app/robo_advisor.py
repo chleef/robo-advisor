@@ -1,8 +1,21 @@
 import requests
 import os
 import json
+from datetime import datetime
 from pandas import DataFrame
 from dotenv import load_dotenv
+
+def to_usd(my_price):
+    """
+    Converts a numeric value to usd-formatted string, for printing and display purposes.
+
+    Param: my_price (int or float) like 4000.444444
+
+    Example: to_usd(4000.444444)
+
+    Returns: $4,000.44
+    """
+    return f"${my_price:,.2f}" #> $12,000.71
 
 
 ALPHAVANTAGE_API_KEY = os.getenv("ALPHAVANTAGE_API_KEY", default="OOPS, please set env var called 'ALPHAVANTAGE_API_KEY'")
@@ -23,7 +36,7 @@ while bad:
         request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={ticker}&apikey={ALPHAVANTAGE_API_KEY}"
 
         response = requests.get(request_url)
-        print(response.status_code)
+        #print(response.status_code)
 
         if "Error" in response.text:
             print(f"Error - Error with your ticker, make sure it's correct and please try again.")
@@ -48,22 +61,34 @@ for date, daily_data in parsed_response["Time Series (Daily)"].items():
     }
     records.append(record)
 
+maxHold = records[1]["high"]
+minHold = records[1]["low"]
+for day in records:
+    if day["high"] > maxHold:
+        maxHold = day["high"]
+    if day["low"] < minHold:   
+        minHold = day["low"]
 
+lastClose = records[0]["close"]
+lastDay = records[0]["date"]
 
-#print("-------------------------")
+print("-------------------------")
 print(f"SELECTED SYMBOL: {selectedSymbol}")
-#print("-------------------------")
-#print("REQUESTING STOCK MARKET DATA...")
-#print("REQUEST AT: 2018-02-20 02:00pm")
+print("-------------------------")
+print(f"REQUEST AT: {datetime.now().strftime('%Y-%m-%d %H:%M:%S %p')}")
 print(f"LAST UPDATED: {refreshedDate}")
-#print("-------------------------")
-#print("LATEST DAY: 2018-02-20")
-#print("LATEST CLOSE: $100,000.00")
-#print("RECENT HIGH: $101,000.00")
-#print("RECENT LOW: $99,000.00")
-#print("-------------------------")
-#print("RECOMMENDATION: BUY!")
-#print("RECOMMENDATION REASON: TODO")
-#print("-------------------------")
-#print("HAPPY INVESTING!")
-#print("-------------------------")
+print("-------------------------")
+print(f"LATEST DAY: {lastDay}")
+print(f"LATEST CLOSE: {to_usd(lastClose)}")
+print(f"RECENT HIGH: {to_usd(maxHold)}")
+print(f"RECENT LOW: {to_usd(minHold)}")
+print("-------------------------")
+if(lastClose < 1.2*minHold):
+    print("RECOMMENDATION: BUY!")
+    print("RECOMMENDATION REASON: Latest close is less than  20% more than recent min")
+else:
+    print("RECOMMENDATION: DON'T BUY!")
+    print("RECOMMENDATION REASON: Latest close is more than recent min")
+print("-------------------------")
+print("HAPPY INVESTING!")
+print("-------------------------")
