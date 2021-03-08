@@ -1,5 +1,5 @@
 # robo-advisor
-##Intro to Python
+## Intro to Python
 
 This project is designed to allow the user to input a stock/crypto ticker of choice, and receive a recommendation on whether to buy or not. Additionally, we should get a chart of the recent closing prices of the stock. We will be pulling from the [alphavantage](https://www.alphavantage.co/) information, so you will need your own API.
 
@@ -29,4 +29,4 @@ ALPHAVANTAGE_API_KEY = yourkey
 ```
 python app/robo_advisor.py
 ```
-Then, follow the prompts to insert your chosen ticker.
+Then, follow the prompt to insert your chosen ticker.
