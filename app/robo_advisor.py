@@ -2,6 +2,8 @@ import requests
 import os
 import json
 import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
 from datetime import datetime
 from pandas import DataFrame
 from dotenv import load_dotenv
@@ -65,6 +67,8 @@ for date, daily_data in parsed_response["Time Series (Daily)"].items():
 #CSV stuff:
 df = DataFrame(records)
 
+#print(type(df['date']))
+
 filePath = os.path.join(os.path.dirname(__file__), "..", "data", f"{selectedSymbol}_prices.csv")
 
 df.to_csv(filePath, index=False)
@@ -99,10 +103,16 @@ else:
     print("RECOMMENDATION: DON'T BUY!")
     print("RECOMMENDATION REASON: Latest close is over 20% more than recent min or not less than average of recent min/max")
 print("-------------------------")
-print(f"Writing {selectedSymbol} info to csv file found in data folder...")
+print(f"Writing {selectedSymbol} info to csv file found in data folder, and making chart of recent closing prices...")
 print("-------------------------")
 print("HAPPY INVESTING!")
 print("-------------------------")
 
 #graph stuff
+df["date"] = pd.to_datetime(df["date"])
+sorted_df = df.sort_values(by="date")
+
 sns.lineplot(data=df,x="date",y="close")
+
+plt.title(f"Recent closing prices for {selectedSymbol}")
+plt.show()
